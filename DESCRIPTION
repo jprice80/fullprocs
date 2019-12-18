@@ -1,0 +1,27 @@
+Package: fullprocs
+Type: Package
+Title: Statistical Models with Assumption Checks
+Version: 0.1.0
+Author: Josh Price <jprice5@utk.edu>
+Maintainer: Josh Price <jprice5@utk.edu>
+Description: Provides full procedures, assumption checks, and output for commonly used statistical analyses. This package contains convenience functions for performing common statistical procedures with assumption checks.  Functions are also included to produce ASCII and MS Word reports of results.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    dplyr,
+    ggplot2,
+    officer,
+    flextable
+Imports: 
+    DescTools,
+    fBasics,
+    energy,
+    gridExtra,
+    grDevices,
+    qqplotr,
+    pander,
+    ggplotify
+Suggests: 
+    gdtools
+RoxygenNote: 7.0.2
