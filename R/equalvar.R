@@ -108,7 +108,6 @@ equalvar<-function(data, formula, center="median"){
 #====================================== Summary ===================================================
 
 
-#' @export
 summary_eqvar<-function(object){
 
   print(object$output, row.names=FALSE)
@@ -119,7 +118,6 @@ summary_eqvar<-function(object){
 #====================================== Reports ===================================================
 
 
-#' @export
 report_eqvar<-function(object, style="multiline", plots=FALSE, split.tables=110, keep.trailing.zeros=TRUE,  ...){
 
   cat("\n")
