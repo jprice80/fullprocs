@@ -17,6 +17,11 @@ summary.fpr<-function(object, plots=FALSE){
   } else if(c2 == "norm"){
 
     summary_norm(object, plots)
+
+  } else {
+
+    summary_eqvar(object)
+
   }
 }
 

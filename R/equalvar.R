@@ -1,3 +1,20 @@
+#' Equality of Variances
+#'
+#' @param data A \code{\link{data.frame}} containing columns of variables.
+#' @param formula An object of class \code{\link{formula}}.  The left side of the formula should be a numeric continuous response.  The right side of the formula should consist of categorical factors. The variables on the right-hand-side of the model must all be factors and must be completely crossed.
+#' @param center The name of a function to compute the center of each group; mean gives the original Levene's test; the default, median, provides a more robust test.
+#'
+#' @return Returns a \code{\link{data.frame}} meant to be printed showing the results of the test.
+#' @note This function primarily utilizes functionality from the \code{\link{car}} package
+#' @references
+#'
+#' Fox, J. (2016) Applied Regression Analysis and Generalized Linear Models, Third Edition. Sage.
+#'
+#' Fox, J. and Weisberg, S. (2019) An R Companion to Applied Regression, Third Edition, Sage.
+#'
+#' @export
+#' @examples
+#' equalvar(data=mtcars, mpg~am*vs, center="median")
 equalvar<-function(data, formula, center="median"){
 
   #Check to insure data is a dataframe
@@ -68,16 +85,52 @@ equalvar<-function(data, formula, center="median"){
       SD.ratio<-round(maxY/minY,2)
       Var.ratio<-round(maxR/minR,2)
 
-      cur<-data.frame(Effect=x[i], dfnum=levmed[1,1], dfden=levmed[2,1], `F value`=round(levmed[1,2],4),
-                      `Pr(>F)`=round(levmed[1,3],4), SD.ratio, Var.ratio)
+      cur<-data.frame(Effect=x[i], SD.ratio, Var.ratio,
+                      dfnum=levmed[1,1], dfden=levmed[2,1], F=round(levmed[1,2],2),
+                      pvalue=round(levmed[1,3],4))
     } else {
-      cur<-data.frame(Effect=x[i], Levene.pval=round(levmed$'Pr(>F)',4)[1],SD.ratio=fctvals$StdChg, Var.ratio=fctvals$VarChg)
+      cur<-data.frame(Effect=x[i], SD.ratio=fctvals$StdChg, Var.ratio=fctvals$VarChg,
+                      dfnum=levmed[1,1], dfden=levmed[2,1], F=round(levmed[1,2],2),
+                      pvalue=round(levmed[1,3],4))
     }
 
     eqvar<-rbind(eqvar, cur)
   }
 
-  class(out)<-c("fpr", "lev")
+  colnames(eqvar) <- c("Effect", "SDratio", "VarRatio", "NumDF", "DenDF", "Fvalue", "Pr(>F)")
+  row.names(eqvar)<-NULL
+  out$output<-eqvar
+  class(out)<-c("fpr", "eqvar")
 
-  return(eqvar)
+  return(out)
 }
+
+#====================================== Summary ===================================================
+
+
+#' @export
+summary_eqvar<-function(object){
+
+  print(object$output, row.names=FALSE)
+  cat("\n")
+  return(invisible(object))
+}
+
+#====================================== Reports ===================================================
+
+
+#' @export
+report_eqvar<-function(object, style="multiline", plots=FALSE, split.tables=110, keep.trailing.zeros=TRUE,  ...){
+
+  cat("\n")
+  cat("=======================================================================================================================")
+  cat("\n")
+  cat("Levene's Test for Homogeneity of Variance")
+  cat("\n")
+  cat("=======================================================================================================================")
+  cat("\n")
+
+  out<-object$output
+  pander::pandoc.table(out, style=style, split.tables=split.tables, keep.trailing.zeros=keep.trailing.zeros, ...)
+}
+

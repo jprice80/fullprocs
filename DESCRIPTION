@@ -10,9 +10,7 @@ Encoding: UTF-8
 LazyData: true
 Depends: 
     dplyr,
-    ggplot2,
-    officer,
-    flextable
+    ggplot2
 Imports: 
     DescTools,
     fBasics,
@@ -21,7 +19,8 @@ Imports:
     grDevices,
     qqplotr,
     pander,
-    ggplotify
+    ggplotify,
+    car
 Suggests: 
     gdtools
 RoxygenNote: 7.0.2

@@ -18,7 +18,7 @@ normality(data, vars, groupby = NULL, energy = FALSE, R = 2000)
 \item{R}{the number of boostrapped resamples.  Unused if energy=FALSE.}
 }
 \value{
-A \code{\link{list}} containing normality tests tresults for each variable listed in the \code{vars} statement.
+A \code{\link{list}} containing normality tests results for each variable listed in the \code{vars} statement.
 }
 \description{
 The \code{normality} function is used to perform normality tests on a set of variables in a \code{\link{data.frame}}.

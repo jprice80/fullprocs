@@ -11,7 +11,7 @@
 #' @param energy a TRUE/FALSE boolean value indicating whether or not to perform the energy test (Székely and Rizzo) with bootstrap p-values.
 #' @param R the number of boostrapped resamples.  Unused if energy=FALSE.
 #'
-#' @return A \code{\link{list}} containing normality tests tresults for each variable listed in the \code{vars} statement.
+#' @return A \code{\link{list}} containing normality tests results for each variable listed in the \code{vars} statement.
 #'
 #' @references
 #' Szekely, G. J. and Rizzo, M. L. (2005) A New Test for Multivariate Normality, Journal of Multivariate Analysis, 93/1, 58-80, http://dx.doi.org/10.1016/j.jmva.2003.12.002.
@@ -378,8 +378,6 @@ summary_norm<-function(object, plots=FALSE){
 
   return(object)
 }
-
-
 
 #====================================== Reports ===================================================
 

@@ -12,6 +12,8 @@
 #' @export
 #'
 #' @examples
+#' m1<-descriptives(data=mtcars, vars=c("mpg","disp"), groupby=c("vs","am"))
+#' report(m1)
 report<-function(object, style="multiline", plots=FALSE, round=4, ...){
 
   c1<-class(object)[1]
@@ -38,6 +40,10 @@ report<-function(object, style="multiline", plots=FALSE, round=4, ...){
     if(plots == TRUE){
       plot.fpr(object)
     }
+
+  } else if(c2 == "eqvar"){
+
+    report_eqvar(object, style, ...)
 
   } else {
     stop(paste(object, "not an fpr object"))

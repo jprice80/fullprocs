@@ -23,3 +23,7 @@ a printed pander table and optional figures
 \description{
 The \code{report} function will produce ASCII formated output. This includes both custom and pandoc tables and figures.
 }
+\examples{
+m1<-descriptives(data=mtcars, vars=c("mpg","disp"), groupby=c("vs","am"))
+report(m1)
+}
