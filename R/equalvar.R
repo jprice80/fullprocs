@@ -132,3 +132,27 @@ report_eqvar<-function(object, style="multiline", plots=FALSE, split.tables=110,
   pander::pandoc.table(out, style=style, split.tables=split.tables, keep.trailing.zeros=keep.trailing.zeros, ...)
 }
 
+#====================================== Plots ===================================================
+
+
+plot_eqvar<-function(object){
+  y<-attr(attr(terms(out$meta$formula), "factors"), "dimnames")[[1]][1]
+  trms<-attr(terms(out$meta$formula), "term.labels")
+  dat<-object$meta$data
+
+  plotout<-list()
+  for(i in 1:length(trms)){
+    trm<-trms[i]
+    form<-as.formula(paste0(y,"~",trm))
+
+    plotout[[i]]<-ggformula::gf_boxplot(form, data=dat, fill="lightblue") +  theme_bw() +
+      stat_boxplot(geom ="errorbar", width = 0.5) +
+      stat_summary(fun=mean, geom="point", shape=10, size=3, color="black", na.rm=TRUE) +
+      ggtitle(paste("Boxplot of", y,"~",trm)) +
+      theme(plot.title = element_text(size=10, hjust = 0.5, face="bold"),
+      axis.title.x = element_text(size=10, color="black", face="bold"),
+      axis.title.y = element_text(size=10, color="black", face="bold"))
+  }
+
+  return(cowplot::plot_grid(plotlist=plotout, ncol=2))
+}

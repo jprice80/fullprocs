@@ -20,7 +20,9 @@ Imports:
     qqplotr,
     pander,
     ggplotify,
-    car
+    car,
+    ggformula,
+    cowplot
 Suggests: 
     gdtools
 RoxygenNote: 7.0.2

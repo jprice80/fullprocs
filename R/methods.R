@@ -18,7 +18,7 @@ summary.fpr<-function(object, plots=FALSE){
 
     summary_norm(object, plots)
 
-  } else {
+  } else if(c2 == "eqvar"){
 
     summary_eqvar(object)
 
@@ -46,6 +46,8 @@ plot.fpr<-function(object, ...){
 
   if(c2=="norm"){
     plot_normality(object, ...)
+  } else if (c2=="eqvar"){
+    plot_eqvar(object, ...)
   }
 }
 
