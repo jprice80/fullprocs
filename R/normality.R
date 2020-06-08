@@ -31,7 +31,7 @@
 #'
 #' @examples
 #' normality(data=mtcars, vars=c("mpg","disp"), groupby=c("vs"))
-normality<-function(data, vars, groupby=NULL, energy=FALSE, R=2000){
+normality<-function(data, vars, groupby=NULL, energy=FALSE, R=2000, plots=FALSE, conf.level=0.95){
 
   #Check to insure data is a dataframe
   if(!is.data.frame(data)){
@@ -245,6 +245,10 @@ normality<-function(data, vars, groupby=NULL, energy=FALSE, R=2000){
 
   class(out)<-c("fpr", "norm")
 
+  if(plots==TRUE){
+    plot.fpr(out, conf.level = conf.level)
+  }
+
   return(out)
 }
 
@@ -272,8 +276,8 @@ plot_normality<-function(object, conf.level = 0.95){
         #dnorm(x, mean = mean(x), sd = sd(x)) * grDevices::nclass.scott(x) * nrow(data), color = "red", size = 1) +
         ggtitle(paste0("Histogram of ", vars[[i]])) + theme_bw() + labs(y = "Frequency") +
         theme(plot.title = element_text(size=10, hjust = 0.5, face="bold"),
-              axis.title.x = element_text(size=8, color="black", face="bold"),
-              axis.title.y = element_text(size=8, color="black", face="bold"))
+              axis.title.x = element_text(size=10, color="black", face="bold"),
+              axis.title.y = element_text(size=10, color="black", face="bold"))
 
       #print(plt_hist)
 
@@ -284,8 +288,8 @@ plot_normality<-function(object, conf.level = 0.95){
         ggtitle(paste0("Normal QQ Plot of ", vars[[i]], " with ", conf.level*100,"% Bootstrap CIs")) +
         labs(x = "Theoretical Quantiles", y = "Sample Quantiles") + theme_bw() +
         theme(plot.title = element_text(size=10, hjust = 0.5, face="bold"),
-              axis.title.x = element_text(size=8, color="black", face="bold"),
-              axis.title.y = element_text(size=8, color="black", face="bold"))
+              axis.title.x = element_text(size=10, color="black", face="bold"),
+              axis.title.y = element_text(size=10, color="black", face="bold"))
 
       #print(plt_qq)
 
@@ -304,8 +308,8 @@ plot_normality<-function(object, conf.level = 0.95){
              geom_histogram(color="darkblue", fill="lightblue", binwidth = function(x) (max(x, na.rm = TRUE)-min(x, na.rm = TRUE))/grDevices::nclass.Sturges(x)) +
              ggtitle(paste0("Histogram of ", vars[[i]])) + theme_bw() + labs(y = "Frequency") +
              theme(plot.title = element_text(size=10, hjust = 0.5, face="bold"),
-                   axis.title.x = element_text(size=8, color="black", face="bold"),
-                   axis.title.y = element_text(size=8, color="black", face="bold")))
+                   axis.title.x = element_text(size=10, color="black", face="bold"),
+                   axis.title.y = element_text(size=10, color="black", face="bold")))
 
       plt_qq<-data %>% group_by(.dots=groupby) %>%
         do(plots=ggplot(data = ., mapping = aes(sample = !!sym(vars[i]))) +
@@ -315,8 +319,8 @@ plot_normality<-function(object, conf.level = 0.95){
              ggtitle(paste0("Normal QQ Plot of ", vars[[i]], " with ", conf.level*100,"% Boostrap CIs")) +
              labs(x = "Theoretical Quantiles", y = "Sample Quantiles") + theme_bw() +
              theme(plot.title = element_text(size=10, hjust = 0.5, face="bold"),
-                   axis.title.x = element_text(size=8, color="black", face="bold"),
-                   axis.title.y = element_text(size=8, color="black", face="bold")))
+                   axis.title.x = element_text(size=10, color="black", face="bold"),
+                   axis.title.y = element_text(size=10, color="black", face="bold")))
 
       #define titles for use later
       nm<-names(plt_hist)
@@ -357,6 +361,7 @@ plot_normality<-function(object, conf.level = 0.95){
       plot2<-out[["plots"]][[i]][[j]][[2]]
 
       plotout[[length(plotout)+1]]<-gridExtra::grid.arrange(plot1,plot2,nrow=1)
+      #plotout[[length(plotout)+1]]<-cowplot::plot_grid(plot1,plot2,nrow=1)
 
     }
   }
@@ -366,13 +371,13 @@ plot_normality<-function(object, conf.level = 0.95){
 
 #====================================== Summary ===================================================
 
-summary_norm<-function(object, plots=FALSE){
+summary_norm<-function(object, plots=FALSE, conf.level=0.95){
   for(i in 1:length(object$output)){
     print(object$output[[i]], row.names=FALSE)
     cat("\n")
 
     if(plots==TRUE){
-      plot.fpr(object)
+      plot.fpr(object, conf.level =  conf.level)
     }
   }
 
@@ -381,7 +386,7 @@ summary_norm<-function(object, plots=FALSE){
 
 #====================================== Reports ===================================================
 
-report_norm<-function(object, style="multiline", plots=FALSE, split.tables=110, keep.trailing.zeros=TRUE,  ...){
+report_norm<-function(object, style="multiline", plots=FALSE, conf.level=0.95, split.tables=110, keep.trailing.zeros=TRUE,  ...){
 
   cat("\n")
   cat("=======================================================================================================================")
@@ -397,7 +402,7 @@ report_norm<-function(object, style="multiline", plots=FALSE, split.tables=110, 
   }
 
   if(plots==TRUE){
-    plot.fpr(object)
+    plot.fpr(object, conf.level = conf.level)
   }
 }
 

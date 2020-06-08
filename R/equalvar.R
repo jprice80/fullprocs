@@ -15,7 +15,7 @@
 #' @export
 #' @examples
 #' equalvar(data=mtcars, mpg~am*vs, center="median")
-equalvar<-function(data, formula, center="median"){
+equalvar<-function(data, formula, center="median", plots=FALSE){
 
   #Check to insure data is a dataframe
   if(!is.data.frame(data)){
@@ -102,16 +102,25 @@ equalvar<-function(data, formula, center="median"){
   out$output<-eqvar
   class(out)<-c("fpr", "eqvar")
 
+  if(plots==TRUE){
+    print(plot.fpr(out))
+  }
+
   return(out)
 }
 
 #====================================== Summary ===================================================
 
 
-summary_eqvar<-function(object){
+summary_eqvar<-function(object, plots=FALSE){
 
   print(object$output, row.names=FALSE)
   cat("\n")
+
+  if(plots==TRUE){
+    print(plot.fpr(object))
+  }
+
   return(invisible(object))
 }
 
@@ -130,15 +139,22 @@ report_eqvar<-function(object, style="multiline", plots=FALSE, split.tables=110,
 
   out<-object$output
   pander::pandoc.table(out, style=style, split.tables=split.tables, keep.trailing.zeros=keep.trailing.zeros, ...)
+
+  if(plots==TRUE){
+    print(plot.fpr(object))
+  }
 }
 
 #====================================== Plots ===================================================
 
 
 plot_eqvar<-function(object){
-  y<-attr(attr(terms(out$meta$formula), "factors"), "dimnames")[[1]][1]
-  trms<-attr(terms(out$meta$formula), "term.labels")
-  dat<-object$meta$data
+  y<-attr(attr(terms(object$meta$formula), "factors"), "dimnames")[[1]][1]
+  trms<-attr(terms(object$meta$formula), "term.labels")
+  dat<-object[["meta"]][["data"]]
+
+  #out<-list()
+  #out[["plots"]]<-list()
 
   plotout<-list()
   for(i in 1:length(trms)){
@@ -154,5 +170,8 @@ plot_eqvar<-function(object){
       axis.title.y = element_text(size=10, color="black", face="bold"))
   }
 
-  return(cowplot::plot_grid(plotlist=plotout, ncol=2))
+  out<-cowplot::plot_grid(plotlist=plotout, ncol=2)
+  return(out)
+
+  #return(invisible(cowplot::plot_grid(plotlist=plotout, ncol=2)))
 }

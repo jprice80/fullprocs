@@ -7,7 +7,7 @@ summary.fpr<-function(object, plots=FALSE){
   c2<-class(object)[2]
 
   if(c1 != "fpr"){
-    stop(paste(object, "not an fpr_desc object"))
+    stop(paste(object, "not an fpr object"))
   }
 
   if(c2 == "desc"){
@@ -20,7 +20,7 @@ summary.fpr<-function(object, plots=FALSE){
 
   } else if(c2 == "eqvar"){
 
-    summary_eqvar(object)
+    summary_eqvar(object, plots)
 
   }
 }
@@ -45,9 +45,13 @@ plot.fpr<-function(object, ...){
   c2<-class(object)[2]
 
   if(c2=="norm"){
+
     plot_normality(object, ...)
+
   } else if (c2=="eqvar"){
+
     plot_eqvar(object, ...)
+
   }
 }
 

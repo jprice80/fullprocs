@@ -38,12 +38,16 @@ report<-function(object, style="multiline", plots=FALSE, round=4, ...){
     report_norm(object, style, ...)
 
     if(plots == TRUE){
-      plot.fpr(object)
+      plot.fpr(object, conf.level = conf.level)
     }
 
   } else if(c2 == "eqvar"){
 
     report_eqvar(object, style, ...)
+
+    if(plots == TRUE){
+      plot.fpr(object)
+    }
 
   } else {
     stop(paste(object, "not an fpr object"))
