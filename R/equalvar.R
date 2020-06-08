@@ -3,6 +3,7 @@
 #' @param data A \code{\link{data.frame}} containing columns of variables.
 #' @param formula An object of class \code{\link{formula}}.  The left side of the formula should be a numeric continuous response.  The right side of the formula should consist of categorical factors. The variables on the right-hand-side of the model must all be factors and must be completely crossed.
 #' @param center The name of a function to compute the center of each group; mean gives the original Levene's test; the default, median, provides a more robust test.
+#' @param plots A TRUE/FALSE boolean indicating whether or not to produce boxplots
 #'
 #' @return Returns a \code{\link{data.frame}} meant to be printed showing the results of the test.
 #' @note This function primarily utilizes functionality from the \code{\link{car}} package
